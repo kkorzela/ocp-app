@@ -1,0 +1,22 @@
+Prosty projekt aplikacji, ktora budowana jest z lokalnego systemu plików
+
+# Utworz projekt 
+oc new-project ocp-app
+
+# Utworz BuildConfig (strategia Docker)
+oc new-build --name=ocp-app --binary --strategy=docker
+
+# Zbuduj obraz z lokalnego katalogu:
+oc start-build ocp-app --from-dir=. --follow
+
+# Utworz aplikacje z obrazu
+oc new-app ocp-app
+
+# Wystaw Service na zewnątrz klastra
+oc create route edge ocp-app --service=ocp-app  --port=8080 
+
+# Sprawdz route
+oc get route
+
+# Po zmianie kodu mozesz powtarzac build
+oc start-build ocp-app --from-dir=. --follow
